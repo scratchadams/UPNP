@@ -31,7 +31,7 @@ def grab_xml(xml_locations):
     urls = []
     
     for location in xml_locations:
-        response = urllib.urlopen(location)
+        response = urllib2.urlopen(location)
         string = xmd.parseString(response.read())
 
         children = string.getElementsByTagName("SCPDURL")
@@ -39,7 +39,7 @@ def grab_xml(xml_locations):
         for step in children:
             scpd_link = step.firstChild.data
 
-        children = string.getElementsByTageName("controlURL")
+        children = string.getElementsByTagName("controlURL")
         
         for step in children:
             control_link = step.firstChild.data
@@ -86,5 +86,8 @@ def build_xml(host, urn_string, fn_string, *arguments):
     
     return pure_xml
 
-print discover()
+
+
+print grab_xml(discover())
+
 
