@@ -29,29 +29,33 @@ def discover():
 
 def grab_xml(xml_locations):
     urls = []
+    scpd_links = []
+    control_links = []
+    event_links = []
     
     for location in xml_locations:
         response = urllib2.urlopen(location)
         string = xmd.parseString(response.read())
 
         children = string.getElementsByTagName("SCPDURL")
+        
+        #print "children" + str(children)
 
         for step in children:
-            scpd_link = step.firstChild.data
+            scpd_links.append(step.firstChild.data)
 
         children = string.getElementsByTagName("controlURL")
         
         for step in children:
-            control_link = step.firstChild.data
+            control_links.append(step.firstChild.data)
 
         children = string.getElementsByTagName("eventSubURL")
 
         for step in children:
-            event_link = step.firstChild.data
+            event_links.append(step.firstChild.data)
         
-        urls.append((scpd_link, control_link, event_link))
 
-    return urls
+    return control_links
 
 
 def build_xml(host, urn_string, fn_string, *arguments):
@@ -88,6 +92,8 @@ def build_xml(host, urn_string, fn_string, *arguments):
 
 
 
-print grab_xml(discover())
+test = grab_xml(discover())
+
+print test
 
 
