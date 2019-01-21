@@ -27,35 +27,34 @@ def discover():
 
     return locations
 
-def grab_xml(xml_locations):
+def grab_xml(xml_location):
     urls = []
     scpd_links = []
     control_links = []
     event_links = []
     
-    for location in xml_locations:
-        response = urllib2.urlopen(location)
-        string = xmd.parseString(response.read())
+    response = urllib2.urlopen(xml_location)
+    string = xmd.parseString(response.read())
 
-        children = string.getElementsByTagName("SCPDURL")
+    children = string.getElementsByTagName("SCPDURL")
         
         #print "children" + str(children)
 
-        for step in children:
-            scpd_links.append(step.firstChild.data)
+    for step in children:
+        scpd_links.append(step.firstChild.data)
 
-        children = string.getElementsByTagName("controlURL")
+    children = string.getElementsByTagName("controlURL")
         
-        for step in children:
-            control_links.append(step.firstChild.data)
+    for step in children:
+        control_links.append(step.firstChild.data)
 
-        children = string.getElementsByTagName("eventSubURL")
+    children = string.getElementsByTagName("eventSubURL")
 
-        for step in children:
-            event_links.append(step.firstChild.data)
+    for step in children:
+        event_links.append(step.firstChild.data)
         
 
-    return control_links
+    return (control_links, scpd_links, event_links)
 
 
 def build_xml(host, urn_string, fn_string, *arguments):
@@ -92,8 +91,13 @@ def build_xml(host, urn_string, fn_string, *arguments):
 
 
 
-test = grab_xml(discover())
+dev_list = []
+devices = discover()
 
-print test
+for d in devices:
+    dev_list.append(grab_xml(d))
+
+for dev in dev_list:
+    print "dev: " + str(dev)
 
 
