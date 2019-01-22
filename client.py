@@ -121,12 +121,14 @@ for d in devices:
 for dev in dev_list:
     i += 1
     j = 0
-    print "device " + str(i)
+    print "device " + str(dev)
     
-    for service in dev:
-        j += 1
-        
-        if ".xml" in str(service[0]):
-            grab_services("http://" + str(dev_urls[i-1]) + str(service[0]))
+    for serv in dev:
+        for service in serv:
+            j += 1
+            print str(service)        
+            
+            if ".xml" in str(service):
+                grab_services("http://" + str(dev_urls[i-1]) + str(service))
 
 
