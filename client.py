@@ -90,14 +90,41 @@ def build_xml(host, urn_string, fn_string, *arguments):
     return pure_xml
 
 
+def grab_services(service_url):
+    print "service_url: " + str(service_url)
+
+    response = urllib2.urlopen(service_url)
+    string = xmd.parseString(response.read())
+
+    children = string.getElementsByTagName("action")
+
+    for step in children:
+        print "step: "
+        print str(step.childNodes)
 
 dev_list = []
+dev_urls = []
 devices = discover()
 
+
+i = 0
+j = 0
+
 for d in devices:
+    print "dev: " + str(d)
+    
+    dev_urls.append(d.split("http://")[1].split("/")[0])
     dev_list.append(grab_xml(d))
 
 for dev in dev_list:
-    print "dev: " + str(dev)
+    i += 1
+    j = 0
+    print "device " + str(i)
+    
+    for service in dev:
+        j += 1
+        
+        if ".xml" in str(service[0]):
+            grab_services("http://" + str(dev_urls[i-1]) + str(service[0]))
 
 
