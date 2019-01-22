@@ -99,8 +99,10 @@ def grab_services(service_url):
     children = string.getElementsByTagName("action")
 
     for step in children:
-        print "step: "
-        print str(step.childNodes)
+        step_child = step.getElementsByTagName("name")
+        
+        for name in step_child:
+            print str(name.firstChild.data)
 
 dev_list = []
 dev_urls = []
